@@ -1,25 +1,146 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Пользовательские данные</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>List of users</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        .title {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #333;
+            padding: 10px;
+        }
+
+        .text-block {
+            font-size: 20px;
+            color: white;
+            padding: 5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .text-block-button {
+            font-size: 20px;
+            color: white;
+            padding: 5px 20px;
+            text-decoration: none;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        body {
+            margin-top: 60px;
+        }
+
+        .text-block-button:hover {
+            color: #ffcc00;
+        }
+
+        .title-table th {
+            font-size: 25px;
+            background-color: whitesmoke !important;
+            color: black;
+            text-align: left;
+            padding: 10px 10px;
+        }
+
+        .sidebar {
+            background-color: white;
+            color: white;
+            font-size: 20px;
+            height: 100vh;
+            width: 15%;
+        }
+
+        .sidebar-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 5px 0px;
+        }
+
+        .container-fluid {
+            padding: 10px 20px;
+        }
+
+        .custom-nav-button {
+            background-color: transparent;
+            color: blue;
+            text-align: left;
+            transition: color 0.3s ease;
+        }
+
+        .custom-nav-button:hover {
+            color: blue;
+        }
+
+        .custom-nav-button.active {
+            background-color: blue !important;
+            color: blue;
+        }
+
+
+    </style>
 </head>
 <body>
-<div class="container mt-4" >
-    <h1>Ваши данные:</h1>
-    <div class="card">
-        <div class="card-body">
-            <p class="card-text">
-                First name: <span th:text="${user.name}"></span><br>
-                Email: <span th:text="${user.email}"></span><br>
-                Статус: <span th:text="${user.roles}"></span>
-            </p>
-            <a th:if="${isUserRole}" th:href="@{/user/edit(id=${user.id})}" class="btn btn-secondary">Изменить</a>
-            <a th:if="${!isUserRole}" th:href="@{/admin/edit(id=${user.id})}" class="btn btn-secondary">Изменить</a>
-            <a href="/logout" class="btn btn-secondary">Выйти</a>
+<div class="title">
+    <div class="text-block">
+        <span th:text="${user.email}">test</span> &nbsp;with roles:&nbsp; <span
+            th:text="${user.roles}">test</span>
+    </div>
+    <a href="/logout" class="text-block-button">Logout</a>
+</div>
+<div class="d-flex">
+    <div class="sidebar col-3">
+        <div class="sidebar-links">
+            <ul class="nav nav-pills nav-fill flex-column" id="roleTabs" role="tablist">
+                <li class="nav-item" role="presentation" th:if="${isUserRole}">
+                    <button class="nav-link custom-nav-button active" id="user-tab" data-bs-toggle="tab"
+                            data-bs-target="#user-content" type="button"
+                            role="tab" aria-controls="user-content" aria-selected="true">USER
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="tab-content" id="roleTabContent">
+            <div class="tab-pane fade show active" id="user-content" role="tabpanel" aria-labelledby="user-tab">
+                <h1>Information page</h1>
+                <table class="table table-bordered">
+                    <thead>
+                    <tr class="title-table">
+                        <th colspan="7">About user:</th>
+                    </tr>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Age</th>
+                        <th>Role</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:value="user">
+                        <td th:text="${user.name}">Ivan</td>
+                        <td th:text="${user.email}">ivan@example.com</td>
+                        <td th:text="${user.age}">35</td>
+                        <td th:text="${user.roles}">User</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

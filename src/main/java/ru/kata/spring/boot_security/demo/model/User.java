@@ -21,6 +21,9 @@ public class User implements UserDetails {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "age")
+    private Integer age;
+
     @Column(name = "email", unique = true)
     private String email;
 
@@ -42,8 +45,9 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String name, String email) {
+    public User(String name, Integer age, String email) {
         this.name = name;
+        this.age = age;
         this.email = email;
     }
 
@@ -63,6 +67,13 @@ public class User implements UserDetails {
         this.name = name;
     }
 
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
 
     public String getEmail() {
         return email;
@@ -90,11 +101,6 @@ public class User implements UserDetails {
 
     public void setPasswordConfirm(String passwordConfirm) {
         this.passwordConfirm = passwordConfirm;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, email);
     }
 
     @Override
@@ -136,16 +142,23 @@ public class User implements UserDetails {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(name, user.name)
-                && Objects.equals(id, user.id)
+        return Objects.equals(id, user.id)
+                && Objects.equals(name, user.name)
+                && Objects.equals(age, user.age)
                 && Objects.equals(email, user.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, age, email);
     }
 
     @Override
     public String toString() {
         return "User{"
                 + "id=" + id
-                + ", firstName='" + name + '\''
+                + ", name='" + name + '\''
+                + ", age='" + age + '\''
                 + ", email='" + email + '\'' + '}';
     }
 }

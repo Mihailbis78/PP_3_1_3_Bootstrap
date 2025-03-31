@@ -9,8 +9,7 @@ import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
-import java.util.Collections;
-import java.util.HashSet;
+import java.util.*;
 
 @Component
 public class Init {
@@ -49,6 +48,7 @@ public class Init {
         if (userService.getUserByEmail("user@example.com") == null) {
             User user = new User();
             user.setName("Иван");
+            user.setAge(45);
             user.setEmail("user@example.com");
             user.setPassword("user");
             user.setRoles(new HashSet<>(Collections.singleton(roleService.findRoleByName("USER"))));
@@ -60,11 +60,21 @@ public class Init {
         if (userService.getUserByEmail("admin@example.com") == null) {
             User admin = new User();
             admin.setName("Сергей");
+            admin.setAge(35);
             admin.setEmail("admin@example.com");
             admin.setPassword(("admin"));
-            admin.setRoles(new HashSet<>(Collections.singleton(roleService.findRoleByName("ADMIN"))));
 
-            userService.saveUser(admin, Collections.singletonList(2L));
+            Set<Role> roles = new HashSet<>();
+            roles.add(roleService.findRoleByName("ADMIN"));
+            roles.add(roleService.findRoleByName("USER"));
+
+            admin.setRoles(roles);
+
+            List<Long> rolesIds = new ArrayList<>();
+            rolesIds.add(1L);
+            rolesIds.add(2L);
+
+            userService.saveUser(admin, rolesIds);
             System.out.println(admin.getPassword());
         }
     }
